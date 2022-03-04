@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import cheerio from 'cheerio';
 
 const wait = (ms: number) => {
@@ -15,7 +15,7 @@ export default async function getAllLettersCombinations(alphabet: string[], base
         for (const letter of alphabet) {
             await wait(ms);
             const alphaUrl = baseUrl + `/alpha/${letter}.html`;
-            const res = await axios.get(alphaUrl);
+            const res: AxiosResponse = await axios.get(alphaUrl);
             const html = res.data;
             const $ = cheerio.load(html);
             const drugAlphaTable: cheerio.Cheerio = $('.ddc-mgb-2 ul li');

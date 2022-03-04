@@ -24,7 +24,7 @@ export default async function getAllDrugsDosage(drugsHref: string[], baseUrl: st
                 alphaUrl = baseUrl + `${href}#dosage`;
             }
 
-            const res = await axios.get(alphaUrl);
+            const res: AxiosResponse = await axios.get(alphaUrl);
             const html = res.data;
             const $ = cheerio.load(html);
             const drugName: cheerio.Cheerio = $('.contentBox').children('h1');
@@ -41,7 +41,7 @@ export default async function getAllDrugsDosage(drugsHref: string[], baseUrl: st
                 }
                 if (drugDosageInfoResponse.info) {
                     allDrugsDossage.push(drugDosageInfoResponse);
-                    createDrugFile(drugDosageInfoResponse);
+                    await createDrugFile(drugDosageInfoResponse);
                 }
 
 
@@ -64,7 +64,8 @@ export default async function getAllDrugsDosage(drugsHref: string[], baseUrl: st
                     name: drugName.text() === '' ? pronouceTitle.text() : drugName.text(),
                     info: drugDosage.text()
                 }
-                createDrugFile(drugDosageInfoResponse);
+                await createDrugFile(drugDosageInfoResponse);
+                console.log(`File ${drugDosageInfoResponse.name} is created succesfully`)
                 allDrugsDossage.push(drugDosageInfoResponse)
             }
         }
